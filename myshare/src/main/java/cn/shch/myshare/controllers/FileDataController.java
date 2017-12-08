@@ -65,10 +65,10 @@ public class FileDataController {
 		@SuppressWarnings("unchecked")
 		Map<String, String> attribute = (Map<String, String>) servletContext.getAttribute("myshare.filetypes");
 		if (attribute != null) {
-			String suffixes=null;
+			String suffixes = null;
 			if (kind != null) {
 				switch (kind) {
-				//文档类型
+				// 文档类型
 				case "documents":
 					suffixes = attribute.get("document.suffix");
 					break;
@@ -87,7 +87,7 @@ public class FileDataController {
 				case "documentOther":
 					suffixes = attribute.get("document.other.suffix");
 					break;
-				//多媒体类型
+				// 多媒体类型
 				case "video":
 					suffixes = attribute.get("media.video.suffix");
 					break;
@@ -97,7 +97,7 @@ public class FileDataController {
 				case "picture":
 					suffixes = attribute.get("media.picture.suffix");
 					break;
-				//压缩包类型
+				// 压缩包类型
 				case "archive":
 					suffixes = attribute.get("archive.suffix");
 					break;
@@ -119,7 +119,7 @@ public class FileDataController {
 				case "tar":
 					suffixes = attribute.get("archive.tar.suffix");
 					break;
-				//可安装的
+				// 可安装的
 				case "install":
 					suffixes = attribute.get("install.suffix");
 					break;
@@ -127,19 +127,23 @@ public class FileDataController {
 			}
 			String[] split = suffixes.split(",");
 			List<FileDataCustom> list = service.findFilesByType(split);
-			//logger.debug("list::::::::" + list);
+			// logger.debug("list::::::::" + list);
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("list", list);
+			if (kind.equals("picture")) {
+				mav.addObject("kind", "picture");
+			}
 			mav.setViewName("table");
 			return mav;
-		} 
+		}
 		return null;
 	}
- @RequestMapping("/findByTime")
-	public ModelAndView findByTime(@RequestParam("scope")String scope)throws Exception{
-		if(scope!=null) {
-			Date currDate=new Date();
-			List<FileDataCustom> list=null;
+
+	@RequestMapping("/findByTime")
+	public ModelAndView findByTime(@RequestParam("scope") String scope) throws Exception {
+		if (scope != null) {
+			Date currDate = new Date();
+			List<FileDataCustom> list = null;
 			switch (scope) {
 			case "week":
 				Date firstDateOfWeek = MyDateTimeCommon.ObtainFirstDayBySpecificDate(currDate, Unit.UNIT_OF_WEEK);
@@ -148,24 +152,26 @@ public class FileDataController {
 			case "month":
 				Date firstDateOfMonth = MyDateTimeCommon.ObtainFirstDayBySpecificDate(currDate, Unit.UNIT_OF_MONTH);
 				list = service.findByTimeScope(firstDateOfMonth.getTime(), currDate.getTime());
-				break;	
+				break;
 			case "threeMonth":
-				Calendar cal=Calendar.getInstance();
+				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.MONTH, -3);
-				Date firstDateOfThreeMonthAgo = MyDateTimeCommon.ObtainFirstDayBySpecificDate(cal.getTime(), Unit.UNIT_OF_MONTH);
+				Date firstDateOfThreeMonthAgo = MyDateTimeCommon.ObtainFirstDayBySpecificDate(cal.getTime(),
+						Unit.UNIT_OF_MONTH);
 				list = service.findByTimeScope(firstDateOfThreeMonthAgo.getTime(), currDate.getTime());
-				break;	
+				break;
 			default:
 				break;
 			}
-			ModelAndView mav=new ModelAndView();
+			ModelAndView mav = new ModelAndView();
 			mav.addObject("list", list);
 			mav.setViewName("table");
 			return mav;
 		}
-		
+
 		return null;
 	}
+
 	/**
 	 * 实现文件下载
 	 * 
@@ -211,6 +217,39 @@ public class FileDataController {
 			}
 		}
 		return null;
+	}
+
+	@RequestMapping("/dispPic")
+	public void dispPic(@RequestParam("id") int id, HttpServletResponse response) throws Exception {
+		// 根据id查询要下载的文件
+		FileDataCustom fileDataCustom = service.findFileById(id);
+		String name = fileDataCustom.getFileName();
+		String path = fileDataCustom.getFilePath();
+		// 获取文件在当前系统的路径
+		String filePath = path + DIRECTORY_SEPARATOR + name;
+		filePath = filePath.replace("\\", "/");
+		File file = new File(filePath);
+		logger.debug(
+				"file::::::::::::::::::::::::" + file.getAbsolutePath() + "       file.exists:" + file.exists());
+		if (file.exists()) {
+			name = URLEncoder.encode(name, "utf-8");
+			response.setContentLengthLong(file.length());
+			response.setContentType("text/image");
+			BufferedInputStream bis = null;
+			try {
+				bis = new BufferedInputStream(new FileInputStream(file));
+				ServletOutputStream os = response.getOutputStream();
+				int len = 0;
+				byte[] b = new byte[1024];
+				while ((len = bis.read(b)) != -1) {
+					os.write(b, 0, len);
+				}
+			} catch (Exception e) {
+				logger.debug("显示图片出错！！！" + e.getMessage());
+			} finally {
+				bis.close();
+			}
+		}
 	}
 
 	public FileDataService getService() {

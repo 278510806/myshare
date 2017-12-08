@@ -19,7 +19,7 @@
 		</if>
 	</sql>
 	<sql id="order_by_time">
-		order by lastmodified desc
+		order by createtime desc,lastmodified desc
 	</sql>
 	
 	<sql id="order_by_filetype">

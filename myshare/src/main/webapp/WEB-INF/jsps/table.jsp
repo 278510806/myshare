@@ -1,8 +1,9 @@
 <%@page import="java.util.Date,cn.shch.myshare.domain.FileDataCustom"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-	<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -61,21 +62,22 @@
 <script src="${pageContext.servletContext.contextPath }/js/setup.js"
 	type="text/javascript"></script>
 <style type="text/css">
-body{
-margin:0px;
-padding:0px
+body {
+	margin: 0px;
+	padding: 0px
 }
 </style>
 </head>
 <body>
-            <div class="box round first grid">
-                <h2>
-                    Tables & Grids</h2>
-                <div class="block">
-                    
-                    
-                    
-                    <table class="data display datatable" id="example">
+	<div class="grid_2">
+		<div class="box round first grid">
+			<h2>共查找到${fn:length(list) }条记录</h2>
+			<div class="block">
+
+				<div id="pic"
+					style="padding: 10px; display: none; border: 1px solid; width: 200px"></div>
+
+				<table class="data display datatable" id="example">
 					<thead>
 						<tr>
 							<th>文件名称</th>
@@ -84,39 +86,86 @@ padding:0px
 							<th>创建时间</th>
 							<th>最后修改时间</th>
 						</tr>
-						</thead>
+					</thead>
 					<tbody>
-					<c:forEach items="${list }" var="fileDataCustom" >
-						<tr class="odd gradeX">
-						
-							<td><a href="javascript:_down(${fileDataCustom.id });" 
-							title="${fileDataCustom.filePath }" >${fileDataCustom.fileName }</a></td>
-							<td><c:if test="${!fileDataCustom.directory }" var="result" >
-								<span style="color:green;font-weight: bold">文件</span>
-							</c:if>
-							<c:if test="${!result }">
-								<span style="color:blue;font-weight: bold">文件夹</span>
-							</c:if>
-							</td>
-							<td class="center"> ${fileDataCustom.fileSize}</td>
-							<%
-								FileDataCustom fdc=(FileDataCustom)(pageContext.getAttribute("fileDataCustom"));
-							%>
-							<c:set var="createTime" value="<%=new Date(fdc.getCreateTime()) %>"></c:set>
-							<c:set var="lastModified" value="<%=new Date(fdc.getLastModified()) %>"></c:set>
-							<td class="center"><fmt:formatDate value="${createTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-							<td class="center"><fmt:formatDate value="${lastModified }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-						</tr>
+						<c:forEach items="${list }" var="fileDataCustom">
+							<tr class="odd gradeX">
+
+								<td><a class="file_name"
+									<c:if test="${not empty kind and kind=='picture'  }">
+								 onmouseover="_dispPic(this,${fileDataCustom.id }) " onmouseout="_hidePic();" 
+								</c:if>
+									href="javascript:_down(${fileDataCustom.id });"
+									title="${fileDataCustom.filePath }">${fileDataCustom.fileName }</a>
+
+								</td>
+								<td><c:if test="${!fileDataCustom.directory }" var="result">
+										<span style="color: green; font-weight: bold">文件</span>
+									</c:if> <c:if test="${!result }">
+										<span style="color: blue; font-weight: bold">文件夹</span>
+									</c:if></td>
+								<td class="center">${fileDataCustom.fileSize}</td>
+								<%
+									FileDataCustom fdc = (FileDataCustom) (pageContext.getAttribute("fileDataCustom"));
+								%>
+								<c:set var="createTime"
+									value="<%=new Date(fdc.getCreateTime())%>"></c:set>
+								<c:set var="lastModified"
+									value="<%=new Date(fdc.getLastModified())%>"></c:set>
+								<td class="center"><fmt:formatDate value="${createTime }"
+										pattern="yyyy-MM-dd HH:mm:ss" /></td>
+								<td class="center"><fmt:formatDate value="${lastModified }"
+										pattern="yyyy-MM-dd HH:mm:ss" /></td>
+							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
-                </div>
-            </div>
+			</div>
+		</div>
+	</div>
 </body>
 <script type="text/javascript">
-function _down(id){
-	window.location.href="${pageContext.servletContext.contextPath }/download.action?id="+id;
-}
+	function _dispPic(div, id) {
+		var offset = $(div).offset();
+		var date = new Date();
+		$("#pic").empty().css({
+			"position" : "absolute",
+			left : offset.left,
+			top : offset.top + 20
+		}).append(
+				"<img border='1px solid black' width='200px' src='dispPic.action?" + date.getTime()
+						+ "&id=" + id + "'/>").show();
+	}
 
+	function _hidePic() {
+		
+		$("#pic").hide().html();
+	}
+	// 	var json = {
+	// 		picType : [ "bmp", "gif", "jpeg", "jpg", "png", "svg", "psd" ]
+	// 	};
+
+	// 	$(".file_name").each(function(idx, element) {
+	// 		if (idx <= 3) {
+	// 			var filename = $.trim($(element).text());
+	// 			var dot = filename.lastIndexOf(".");
+	// 			var suffix = filename.substring(dot+1);
+	// 			alert(idx+"  "+suffix);
+	// 			var list = json.picType;
+	// 			var bool=false;
+	// 			for(var i=0;i<list.length;i++){
+	// 				if(suffix==list[i]){
+	// 					bool=true;
+	// 					break;
+	// 				}
+	// 			}
+
+	// 		}
+	// 	});
+
+	function _down(id) {
+		window.location.href = "${pageContext.servletContext.contextPath }/download.action?id="
+				+ id;
+	}
 </script>
 </html>
