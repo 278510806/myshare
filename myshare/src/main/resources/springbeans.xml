@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- <bean id="fileData" class="org.mybatis.spring.mapper.MapperFactoryBean"> -->
+	<!-- <property name="mapperInterface" value="cn.shch.myshare.mapper.FileDataMapper"></property> -->
+	<!-- <property name="sqlSessionFactory" ref="factory"></property> -->
+	<!-- </bean> -->
+
+	<bean id="userService" class="cn.shch.myshare.service.impl.UserServiceImpl">
+<!-- 		由于已经配置了自动扫描，因此代理的UserCustomMapper的实例已存在于spring容器中，此处自动注入,以下同， -->
+	</bean>
+	<bean id="fileDataService" class="cn.shch.myshare.service.impl.FileDataServiceImpl"></bean>
+</beans>

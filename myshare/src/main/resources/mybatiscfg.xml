@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="logImpl" value="STDOUT_LOGGING"/>
+	</settings>
+	<typeAliases>
+		<package name="cn.shch.myshare.domain"/>
+		<package name="cn.shch.myshare.vo"/>
+	</typeAliases>
+<!-- 由于在spring进行了配置，此处可以省略 -->
+<!-- 	<environments default=""></environments> -->
+<!-- 	<mappers> -->
+ 	<!-- 批量扫描mapper -->
+<!-- 		<package name="cn.shch.myshare.mapper"/> -->
+<!-- 	</mappers> -->
+</configuration>

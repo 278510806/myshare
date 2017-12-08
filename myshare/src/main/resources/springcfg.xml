@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	<!-- 自动扫描jdbc配置文件 -->
+	<context:property-placeholder location="classpath:db.properties" />
+	<!-- datasource数据源配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.pwd}"></property>
+		<property name="maxPoolSize" value="2"></property>
+		<property name="minPoolSize" value="1"></property>
+		<property name="idleConnectionTestPeriod" value="120"></property>
+	</bean>
+	<!-- sessionFactory工厂类，用于生产SqlSessionFactory对象 -->
+	<bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation" value="classpath:mybatiscfg.xml"></property>
+	</bean>
+	<!-- 使用spring的扫描器来扫描mapper并注册代理类，代替mybatiscfg。xml中的mappers-package的配置，但要遵循同名规范，扫描出来的mapper的id默认为 
+		mapper类名（首字母小写） 如果扫描多个mapper包，每个mapper包之间以半角逗号分隔 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.shch.myshare.mapper"></property>
+		<!-- 注意此处要使用sqlSessionFactoryBeanName，而不是sqlSessionFactory，原因是:MapperScannerConfigurer要先于context:property-placeholder执行，如果使用sqlSessionFactory， 
+			则context:property-placeholder加载不上，导致datasource不起作用 -->
+		<property name="sqlSessionFactoryBeanName" value="factory"></property>
+	</bean>
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- 事务相关控制配置：例如配置事务的传播机制 -->
+
+	<tx:advice id="advice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException" />
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="add*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="create*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+
+			<tx:method name="find*" propagation="SUPPORTS" />
+			<tx:method name="get*" propagation="SUPPORTS" />
+			<tx:method name="select*" propagation="SUPPORTS" />
+			<tx:method name="query*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 把事务控制在service层 -->
+	<aop:config>
+		<aop:pointcut id="cut"
+			expression="execution(public * cn.shch.myshare.service.*.*(..))" />
+		<aop:advisor pointcut-ref="cut" advice-ref="advice" />
+	</aop:config>
+
+</beans>

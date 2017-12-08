@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.shch.myshare.mapper.UserCustomMapper">
+	<!-- sql片段 -->
+	<sql id="queryUserCustom">
+		<if test="userCustom!=null">
+			<if test="userCustom.loginname!=null and userCustom.pwd!=null and userCustom.loginname!='' and userCustom.pwd!=''">
+				loginname=#{userCustom.loginname} and pwd=#{userCustom.pwd}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="login" parameterType="userCustomVo"
+		resultType="userCustom">
+		select loginname,pwd from users
+		<where>
+			<include refid="queryUserCustom"></include>
+		</where>
+	</select>
+	
+	<select id="findUserById" parameterType="integer"
+	resultType="userCustom">
+		select * from users
+		<where>
+			id=#{id,jdbcType=INTEGER}
+		</where>
+	</select>
+</mapper>

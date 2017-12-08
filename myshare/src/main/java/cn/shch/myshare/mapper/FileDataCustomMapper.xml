@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.shch.myshare.mapper.FileDataCustomMapper">
+
+	<sql id="select_Fields">
+		id,filename,filepath,isdirectory,isfile,ishidden,
+		canexecute,canread,canwrite,freespace,totalspace,
+		usablespace,filesize,createtime,lastaccess,
+		lastmodified,querycount
+	</sql>
+	<sql id="filename_like_type">
+		<if test="array!=null">
+			<foreach collection="array" index="index" item="suffix" open=""
+				separator="or" close="">
+				filename like concat('%.',lower(#{suffix}))
+			</foreach>
+		</if>
+	</sql>
+	<sql id="order_by_time">
+		order by lastmodified desc
+	</sql>
+	
+	<sql id="order_by_filetype">
+		order by isdirectory,lastmodified desc
+	</sql>
+	<select id="findFilesByType" resultType="fileDataCustom">
+		select
+		<include refid="select_Fields"></include>
+		from filedata
+		<where>
+			<include refid="filename_like_type"></include>
+			<include refid="order_by_time"></include>
+		</where>
+	</select>
+
+	<select id="findAllByOptions" parameterType="cn.shch.myshare.vo.FileDataCustomVo"
+		resultType="fileDataCustom">
+		select
+		<include refid="select_Fields"></include>
+		from filedata
+		<where>
+			<if test="fileName!=null and fileName!=''">
+				filename like concat('%',#{fileName},'%')
+			</if>
+			<if test="directory!=null and directory!=''">
+				isdirectory=#{directory}
+			</if>
+			<if test="timeScope!=null">
+				lastmodified between {timeScope.begin} and
+				{timeScope.end}
+				or lastaccess between {timeScope.begin} and {timeScope.end}
+				or
+				createtime between {timeScope.begin} and {timeScope.end}
+
+			</if>
+		</where>
+	</select>
+
+	<select id="findByTimeScope" resultType="fileDataCustom">
+		select
+		<include refid="select_Fields"></include>
+		from filedata
+		<where>
+				lastmodified between #{begin} and
+				#{end}
+				or lastaccess between #{begin} and
+				#{end}
+				or
+				createtime between #{begin} and
+				#{end}
+		</where>
+		<include refid="order_by_filetype"></include>
+	</select>
+	<select id="findFileById" parameterType="integer" resultType="fileDataCustom">
+		select id,filename,filepath from filedata where id=#{id}
+		
+	</select>
+</mapper>
