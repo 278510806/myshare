@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>Typography | BlueWhale Admin</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.servletContext.contextPath }/css/reset.css"
 	media="screen" />
@@ -274,7 +274,8 @@ body {
 				</div>
 			</div>
 		</div>
-		<div class="grid_10">
+		<div id="table_parent" class="grid_10">
+			<div id="pic" style="display: none; border: 1px solid">ss</div>
 			<iframe id="external-frame" name="external-frame"
 				style="width: 100%; overflow: auto" onload="changeFrameHeight()"
 				src="${pageContext.servletContext.contextPath }/notifications.action"></iframe>

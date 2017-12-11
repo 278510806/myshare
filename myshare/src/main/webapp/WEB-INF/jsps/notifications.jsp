@@ -58,9 +58,9 @@
 <script src="${pageContext.servletContext.contextPath }/js/setup.js"
 	type="text/javascript"></script>
 <style type="text/css">
-body{
-margin:0px;
-padding:0px
+body {
+	margin: 0px;
+	padding: 0px
 }
 </style>
 </head>

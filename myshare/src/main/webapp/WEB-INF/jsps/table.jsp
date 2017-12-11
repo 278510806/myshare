@@ -74,8 +74,7 @@ body {
 			<h2>共查找到${fn:length(list) }条记录</h2>
 			<div class="block">
 
-				<div id="pic"
-					style="padding: 10px; display: none; border: 1px solid; width: 200px"></div>
+
 
 				<table class="data display datatable" id="example">
 					<thead>
@@ -125,16 +124,28 @@ body {
 	</div>
 </body>
 <script type="text/javascript">
-	function _dispPic(div, id) {
-		var offset = $(div).offset();
+	function _dispPic(a, id) {
+		//alert($("#table_parent",parent.document).html());
+		//alert($("#pic",parent.document).offset().top);
+		var offset = $(a).offset();
 		var date = new Date();
-		$("#pic").empty().css({
+		var wid=500;
+		$("#pic",parent.document).empty().css({
 			"position" : "absolute",
-			left : offset.left,
-			top : offset.top + 20
-		}).append(
-				"<img border='1px solid black' width='200px' src='dispPic.action?" + date.getTime()
-						+ "&id=" + id + "'/>").show();
+			"left" : offset.left+$(a).parent().width(),
+			//"top" : $(a).parent().parent().parent().top,
+			"top":$("#pic",parent.document).offset().top,
+			"width":wid+"px",
+			//"height":"400px",
+			"border":"1px solid black"
+			//"background":"url(dispPic.action?"+date.getTime()+"&id="+id+") no-repeat",
+			
+		})
+		.append(
+				"<img border='1px solid black' style='width:"+wid+"px' src='dispPic.action?" + date.getTime()
+						+ "&id=" + id + "'/>").show().click(function(){
+							alert(id);
+						});
 	}
 
 	function _hidePic() {
