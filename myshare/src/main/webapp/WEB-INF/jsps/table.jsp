@@ -7,7 +7,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<!-- 开发阶段取消浏览器缓存，正式使用时需要去掉 -->
+<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="expires" content="0"/>
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.servletContext.contextPath }/css/reset.css"
@@ -125,27 +129,19 @@ body {
 </body>
 <script type="text/javascript">
 	function _dispPic(a, id) {
-		//alert($("#table_parent",parent.document).html());
-		//alert($("#pic",parent.document).offset().top);
 		var offset = $(a).offset();
 		var date = new Date();
 		var wid=500;
 		$("#pic",parent.document).empty().css({
 			"position" : "absolute",
 			"left" : offset.left+$(a).parent().width(),
-			//"top" : $(a).parent().parent().parent().top,
 			"top":$("#pic",parent.document).offset().top,
 			"width":wid+"px",
-			//"height":"400px",
 			"border":"1px solid black"
-			//"background":"url(dispPic.action?"+date.getTime()+"&id="+id+") no-repeat",
-			
 		})
 		.append(
 				"<img border='1px solid black' style='width:"+wid+"px' src='dispPic.action?" + date.getTime()
-						+ "&id=" + id + "'/>").show().click(function(){
-							alert(id);
-						});
+						+ "&id=" + id + "'/>").show();
 	}
 
 	function _hidePic() {

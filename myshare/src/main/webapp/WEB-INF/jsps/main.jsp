@@ -3,8 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!-- 开发阶段取消浏览器缓存，正式使用时需要去掉 -->
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="expires" content="0">
+<title>Typography | BlueWhale Admin</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.servletContext.contextPath }/css/reset.css"
 	media="screen" />
@@ -75,7 +79,7 @@ body {
 		}
 	};
 	function changeFrameHeight() {
-		var ifm = document.getElementById("iframepage");
+		var ifm = document.getElementById("external-frame");
 		ifm.height = document.documentElement.clientHeight;
 	}
 	window.onresize = function() {
@@ -246,22 +250,7 @@ body {
 								<li><a>Submenu 4</a></li>
 								<li><a>Submenu 5</a></li>
 							</ul></li>
-						<li><a class="menuitem" target="external-frame">技术视频（综合）</a>
-							<ul class="submenu">
-								<li><a>Submenu 1</a></li>
-								<li><a>Submenu 2</a></li>
-								<li><a>Submenu 3</a></li>
-								<li><a>Submenu 4</a></li>
-								<li><a>Submenu 5</a></li>
-							</ul></li>
-						<li><a class="menuitem" target="external-frame">软件包（综合）</a>
-							<ul class="submenu">
-								<li><a>Submenu 1</a></li>
-								<li><a>Submenu 2</a></li>
-								<li><a>Submenu 3</a></li>
-								<li><a>Submenu 4</a></li>
-								<li><a>Submenu 5</a></li>
-							</ul></li>
+
 						<li><a class="menuitem" target="external-frame">家庭（综合）</a>
 							<ul class="submenu">
 								<li><a>Submenu 1</a></li>
@@ -275,7 +264,7 @@ body {
 			</div>
 		</div>
 		<div id="table_parent" class="grid_10">
-			<div id="pic" style="display: none; border: 1px solid">ss</div>
+			<div id="pic" style="display: none; border: 1px solid"></div>
 			<iframe id="external-frame" name="external-frame"
 				style="width: 100%; overflow: auto" onload="changeFrameHeight()"
 				src="${pageContext.servletContext.contextPath }/notifications.action"></iframe>
