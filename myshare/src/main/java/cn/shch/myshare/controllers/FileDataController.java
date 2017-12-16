@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.shch.common.MyDateTimeCommon;
@@ -252,6 +253,15 @@ public class FileDataController {
 		}
 	}
 
+	public @ResponseBody List<FileDataCustom> findDirectoryImageIds(@RequestParam String path,HttpServletRequest request)throws Exception{
+		ServletContext servletContext = request.getServletContext();
+		@SuppressWarnings("unchecked")
+		Map<String, String> attribute = (Map<String, String>) servletContext.getAttribute("myshare.filetypes");
+		String suffixes = attribute.get("media.picture.suffix");
+		String[] split = suffixes.split(",");
+		return null;
+	}
+	
 	public FileDataService getService() {
 		return service;
 	}

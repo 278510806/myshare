@@ -265,6 +265,7 @@ body {
 		</div>
 		<div id="table_parent" class="grid_10">
 			<div id="pic" style="display: none; border: 1px solid"></div>
+			<div id="directory_pic" style="display:none"></div>
 			<iframe id="external-frame" name="external-frame"
 				style="width: 100%; overflow: auto" onload="changeFrameHeight()"
 				src="${pageContext.servletContext.contextPath }/notifications.action"></iframe>
@@ -282,8 +283,15 @@ body {
 	</div>
 </body>
 <script type="text/javascript">
-function _dispInDiv(img){
-	
+function _dispInDiv(img,path){
+	$.ajax({
+		type:"POST",
+		url:"${pageContext.servletContext.contextPath }/findDirectoryImageIds.action",
+		data:"path="+id,
+		success:function(data){
+			alert(data);
+		}
+	});
 }
 </script>
 </html>

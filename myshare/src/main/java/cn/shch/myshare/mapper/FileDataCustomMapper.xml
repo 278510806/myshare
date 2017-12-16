@@ -14,14 +14,14 @@
 		<if test="array!=null">
 			<foreach collection="array" index="index" item="suffix" open=""
 				separator="or" close="">
-				filename like concat('%.',lower(#{suffix}))
+				filetype = concat('%.',lower(#{suffix}))
 			</foreach>
 		</if>
 	</sql>
 	<sql id="order_by_time">
 		order by createtime desc,lastmodified desc,lastaccess desc
 	</sql>
-	
+
 	<sql id="order_by_filetype">
 		order by isdirectory,lastmodified desc
 	</sql>
@@ -50,9 +50,11 @@
 			<if test="timeScope!=null">
 				lastmodified between {timeScope.begin} and
 				{timeScope.end}
-				or lastaccess between {timeScope.begin} and {timeScope.end}
+				or lastaccess between {timeScope.begin} and
+				{timeScope.end}
 				or
-				createtime between {timeScope.begin} and {timeScope.end}
+				createtime between {timeScope.begin} and
+				{timeScope.end}
 
 			</if>
 		</where>
@@ -63,18 +65,25 @@
 		<include refid="select_Fields"></include>
 		from filedata
 		<where>
-				lastmodified between #{begin} and
-				#{end}
-				or lastaccess between #{begin} and
-				#{end}
-				or
-				createtime between #{begin} and
-				#{end}
+			lastmodified between #{begin} and
+			#{end}
+			or lastaccess between #{begin} and
+			#{end}
+			or
+			createtime between #{begin} and
+			#{end}
 		</where>
 		<include refid="order_by_filetype"></include>
 	</select>
 	<select id="findFileById" parameterType="integer" resultType="fileDataCustom">
 		select id,filename,filepath from filedata where id=#{id}
+	</select>
+	<select id="findFilesInSpecificFolder" resultType="fileDataCustom">
+		select
+		<include refid="select_Fields"></include>
+		from filedata
+		<where>
 		
+		</where>
 	</select>
 </mapper>

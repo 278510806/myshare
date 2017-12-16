@@ -20,7 +20,13 @@ public interface FileDataCustomMapper {
 //	public List<FileDataCustom> findVideos()throws Exception;
 //	public List<FileDataCustom> findAutios()throws Exception;
 //	public List<FileDataCustom> findArchives()throws Exception;
-	public List<FileDataCustom> findFilesInSpecificFolder(String folderName)throws Exception;
+	/**
+	 * 根据文件夹路径返回其下的指定类型的文件文件
+	 * @param path
+	 * @return
+	 * @throws Exception
+	 */
+	public List<FileDataCustom> findFilesInSpecificFolder(@Param("folderName") String folderName,String... options)throws Exception;
 	/**
 	 * 返回指定日期范围内创建或修改或更新或访问过的文件列表
 	 * @param begin
@@ -31,4 +37,6 @@ public interface FileDataCustomMapper {
 	public List<FileDataCustom> findByTimeScope(@Param("begin")long begin,@Param("end")long end)throws Exception;
 	public List<FileDataCustom> findAllByOptions(FileDataCustomVo vo)throws Exception;
 	public FileDataCustom findFileById(int id)throws Exception;
+
+	//public List<FileDataCustom> findImgsInDir(String path,FileType fileType)throws Exception;
 }
