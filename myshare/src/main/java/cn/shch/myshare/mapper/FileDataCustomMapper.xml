@@ -10,11 +10,27 @@
 		usablespace,filesize,createtime,lastaccess,
 		lastmodified,querycount
 	</sql>
+<!-- 	<sql id="filename_like_type"> -->
+<!-- 		<if test="array!=null"> -->
+<!-- 			<foreach collection="array" index="index" item="suffix" open="" -->
+<!-- 				separator="or" close=""> -->
+<!-- 				filetype = concat('%.',lower(#{suffix})) -->
+<!-- 			</foreach> -->
+<!-- 		</if> -->
+<!-- 	</sql> -->
 	<sql id="filename_like_type">
 		<if test="array!=null">
-			<foreach collection="array" index="index" item="suffix" open=""
-				separator="or" close="">
-				filetype = concat('%.',lower(#{suffix}))
+			<foreach collection="array" index="index" item="suffix" open="("
+				separator="or" close=")">
+				filetype = #{suffix}
+			</foreach>
+		</if>
+	</sql>
+		<sql id="filetype_type">
+		<if test="param2!=null">
+			<foreach collection="param2" index="index" item="suffix" open="("
+				separator="or" close=")">
+				filetype = #{suffix}
 			</foreach>
 		</if>
 	</sql>
@@ -83,7 +99,9 @@
 		<include refid="select_Fields"></include>
 		from filedata
 		<where>
-		
+			filepath=#{folderName} and
+			<include refid="filetype_type"></include>
+			<include refid="order_by_time"></include>
 		</where>
 	</select>
 </mapper>

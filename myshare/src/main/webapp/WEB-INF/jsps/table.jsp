@@ -96,7 +96,7 @@ body {
 
 								<td><a class="file_name"
 									<c:if test="${not empty kind and kind=='picture'  }">
-								 onmouseover="_dispPic(this,${fileDataCustom.id },${fileDataCustom.filePath }) " onmouseout="_hidePic();" 
+								 onmouseover="_dispPic(this,${fileDataCustom.id },'${fileDataCustom.filePath }') " onmouseout="_hidePic();" 
 								</c:if>
 									href="javascript:_down(${fileDataCustom.id });"
 									title="${fileDataCustom.filePath }">${fileDataCustom.fileName }</a>
@@ -141,7 +141,7 @@ body {
 			"border":"1px solid black"
 		})
 		.append(
-				"<img onclick='_dispInDiv(this,"+path+");' border='1px solid black' style='width:"+wid+"px' src='dispPic.action?" + date.getTime()
+				"<img onclick='_dispInDiv(this,\""+path+"\");' border='1px solid black' style='width:"+wid+"px' src='dispPic.action?" + date.getTime()
 						+ "&id=" + id + "'/>").show();
 	}
 

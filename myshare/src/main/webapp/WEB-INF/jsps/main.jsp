@@ -284,10 +284,11 @@ body {
 </body>
 <script type="text/javascript">
 function _dispInDiv(img,path){
+	alert("aaa");
 	$.ajax({
 		type:"POST",
 		url:"${pageContext.servletContext.contextPath }/findDirectoryImageIds.action",
-		data:"path="+id,
+		data:"path="+path,
 		success:function(data){
 			alert(data);
 		}

@@ -253,13 +253,16 @@ public class FileDataController {
 		}
 	}
 
+	@RequestMapping("findDirectoryImageIds")
 	public @ResponseBody List<FileDataCustom> findDirectoryImageIds(@RequestParam String path,HttpServletRequest request)throws Exception{
 		ServletContext servletContext = request.getServletContext();
 		@SuppressWarnings("unchecked")
 		Map<String, String> attribute = (Map<String, String>) servletContext.getAttribute("myshare.filetypes");
 		String suffixes = attribute.get("media.picture.suffix");
 		String[] split = suffixes.split(",");
-		return null;
+		List<FileDataCustom> findFilesInSpecificFolder = service.findFilesInSpecificFolder(path, split);
+		System.out.println("-------------------------------------"+findFilesInSpecificFolder);
+		return findFilesInSpecificFolder;
 	}
 	
 	public FileDataService getService() {

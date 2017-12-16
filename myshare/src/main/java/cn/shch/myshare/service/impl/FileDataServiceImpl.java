@@ -19,10 +19,7 @@ public class FileDataServiceImpl implements FileDataService{
 		return fileDataCustomMapper.findFilesByType(type);
 	}
 
-	@Override
-	public List<FileDataCustom> findFilesInSpecificFolder(String folderName) throws Exception {
-		return null;
-	}
+
 
 	@Override
 	public List<FileDataCustom> findByTimeScope(long begin,long end) throws Exception {
@@ -45,6 +42,13 @@ public class FileDataServiceImpl implements FileDataService{
 	@Override
 	public FileDataCustom findFileById(int id) throws Exception {
 		return fileDataCustomMapper.findFileById(id);
+	}
+
+
+
+	@Override
+	public List<FileDataCustom> findFilesInSpecificFolder(String folderName, String... options) throws Exception {
+		return fileDataCustomMapper.findFilesInSpecificFolder(folderName, options);
 	}
 
 }
