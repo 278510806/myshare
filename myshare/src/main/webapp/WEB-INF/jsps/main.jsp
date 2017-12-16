@@ -200,7 +200,7 @@ body {
 			</ul>
 		</div>
 		<div class="clear"></div>
-		<div class="grid_2">
+		<div id="grid_2" class="grid_2">
 			<div class="box sidemenu">
 				<div class="block" id="section-menu">
 					<ul class="section menu">
@@ -281,4 +281,9 @@ body {
 		</p>
 	</div>
 </body>
+<script type="text/javascript">
+function _dispInDiv(img){
+	
+}
+</script>
 </html>

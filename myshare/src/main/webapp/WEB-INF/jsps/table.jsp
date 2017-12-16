@@ -128,25 +128,27 @@ body {
 	</div>
 </body>
 <script type="text/javascript">
+
 	function _dispPic(a, id) {
 		var offset = $(a).offset();
 		var date = new Date();
 		var wid=500;
 		$("#pic",parent.document).empty().css({
 			"position" : "absolute",
-			"left" : offset.left+$(a).parent().width(),
-			"top":$("#pic",parent.document).offset().top,
+			"left" : offset.left+$(a).parent().width()+$("#grid_2",parent.document).width()+40+"px",
+			"top":$("#pic",parent.document).offset().top+"px",
 			"width":wid+"px",
 			"border":"1px solid black"
 		})
 		.append(
-				"<img border='1px solid black' style='width:"+wid+"px' src='dispPic.action?" + date.getTime()
+				"<img onclick='_dispInDiv(this);' border='1px solid black' style='width:"+wid+"px' src='dispPic.action?" + date.getTime()
 						+ "&id=" + id + "'/>").show();
 	}
 
+
 	function _hidePic() {
 		
-		$("#pic").hide().html();
+		//$("#pic",parent.document).hide().html();
 	}
 	// 	var json = {
 	// 		picType : [ "bmp", "gif", "jpeg", "jpg", "png", "svg", "psd" ]
