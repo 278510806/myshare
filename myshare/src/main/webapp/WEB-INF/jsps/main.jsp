@@ -268,7 +268,8 @@ body {
 			</div>
 		</div>
 		<div id="table_parent" class="grid_10">
-			<div id="pic" style="display: none; border: 1px solid"></div>
+			<div ondblclick="$(this).empty().hide();" id="pic" style="display: none; border: 1px solid">
+			</div>
 			<div id="LoopDiv" style="display: none">
 				<span onclick="$('#LoopDiv').empty().hide();"
 					style="border: 1px solid black; width: 50px; height: 50px; float: right; background: #E0E0E0; text-align: center; poline-height: 50px; color: white; font-weight: bold;cursor: pointer">CLOSE</span>
@@ -318,7 +319,7 @@ body {
 							"width" : "100%",
 							"height":"100%",
 							"border" : "1px solid black",
-							"background":"#F0F0F0"
+							"background":"black"
 						}).show();
 						$("#pic").hide();
 						$
