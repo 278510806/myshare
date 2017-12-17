@@ -6,7 +6,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- 开发阶段取消浏览器缓存，正式使用时需要去掉 -->
 <meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache" />
 <meta http-equiv="expires" content="0">
 <title>Typography | BlueWhale Admin</title>
 <link rel="stylesheet" type="text/css"
@@ -24,6 +24,10 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.servletContext.contextPath }/css/nav.css"
 	media="screen" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.servletContext.contextPath }/css/imageflow.css"
+	media="screen" />
+
 <!--[if IE 6]><link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/css/ie6.css" media="screen" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/css/ie.css" media="screen" /><![endif]-->
 <link
@@ -265,7 +269,10 @@ body {
 		</div>
 		<div id="table_parent" class="grid_10">
 			<div id="pic" style="display: none; border: 1px solid"></div>
-			<div id="directory_pic" style="display:none"></div>
+			<div id="LoopDiv" style="display: none">
+				<span onclick="$('#LoopDiv').empty().hide();"
+					style="border: 1px solid black; width: 50px; height: 50px; float: right; background: #E0E0E0; text-align: center; poline-height: 50px; color: white; font-weight: bold;cursor: pointer">CLOSE</span>
+			</div>
 			<iframe id="external-frame" name="external-frame"
 				style="width: 100%; overflow: auto" onload="changeFrameHeight()"
 				src="${pageContext.servletContext.contextPath }/notifications.action"></iframe>
@@ -283,16 +290,41 @@ body {
 	</div>
 </body>
 <script type="text/javascript">
-function _dispInDiv(img,path){
-	alert("aaa");
-	$.ajax({
-		type:"POST",
-		url:"${pageContext.servletContext.contextPath }/findDirectoryImageIds.action",
-		data:"path="+path,
-		success:function(data){
-			alert(data);
-		}
-	});
-}
+	function _dispInDiv(img, path) {
+		//alert("aaa");
+		$
+				.ajax({
+					type : "POST",
+					url : "${pageContext.servletContext.contextPath }/findDirectoryImageIds.action",
+					data : "path=" + path,
+					success : function(data) {
+						//alert(data.length);
+						var html = '\
+				<input id="S_Num" type="hidden" value="8" />\
+					<div id="starsIF" class="imageflow"> \
+					';
+						for (var i = 0; i < data.length; i++) {
+							var map = data[i];
+							html += "<img   src='dispPic.action?"
+									+ new Date().getTime() + "&id=" + map.id
+									+ "'/>";
+						}
+						html += "</div>";
+						//alert(html);
+						$("#LoopDiv").append(html).css({
+							"position" : "absolute",
+							"left" : 0,
+							"top" : 0,
+							"width" : "100%",
+							"height":"100%",
+							"border" : "1px solid black",
+							"background":"#F0F0F0"
+						}).show();
+						$("#pic").hide();
+						$
+								.getScript("${pageContext.servletContext.contextPath }/js/imageflow.js");
+					}
+				});
+	}
 </script>
 </html>

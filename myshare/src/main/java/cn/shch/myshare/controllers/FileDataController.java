@@ -261,7 +261,6 @@ public class FileDataController {
 		String suffixes = attribute.get("media.picture.suffix");
 		String[] split = suffixes.split(",");
 		List<FileDataCustom> findFilesInSpecificFolder = service.findFilesInSpecificFolder(path, split);
-		System.out.println("-------------------------------------"+findFilesInSpecificFolder);
 		return findFilesInSpecificFolder;
 	}
 	
